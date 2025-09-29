@@ -12,3 +12,6 @@ class Feed(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     
     user: Mapped["User"] = relationship("User", back_populates="feeds")
+    
+    def __repr__(self):
+        return f"<User(id={self.id}, username='{self.username}')>"
