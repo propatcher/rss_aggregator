@@ -3,15 +3,15 @@ from pydantic import BaseModel, ConfigDict, field_validator,EmailStr
 class SUserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
-    login: str
+    username: str
     email: EmailStr
 
 class SUserRegistration(BaseModel):
-    login: str
+    username: str
     email: EmailStr
     password: str
     
-    @field_validator('login')
+    @field_validator('username')
     def validate_login(cls, v:str):
         v = v.strip()
         if len(v) < 3:
@@ -25,6 +25,8 @@ class SUserRegistration(BaseModel):
             raise ValueError("Пароль должен состоять не только из алфавитных букв")
         if v.isdigit():
             raise ValueError("Пароль не может содержать только цифры")
+        if len(v.encode("utf-8")) > 72:
+            raise ValueError("Пароль не должен превышать 72 байта в UTF-8")
         return v
         
 class SUserLogin(BaseModel):

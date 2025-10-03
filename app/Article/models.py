@@ -20,7 +20,7 @@ class Article(Base):
     tags: Mapped[JSON] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
     
-    feeds: Mapped["Feed"] = relationship("Feed",back_populates='articles')
+    feed: Mapped["Feed"] = relationship("Feed",back_populates='articles')
     
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.title}')>"

@@ -1,7 +1,6 @@
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
-
+from sqlalchemy.ext.declarative import declarative_base
 from app.config import settings
 
 if settings.MODE == "TEST":
@@ -16,5 +15,4 @@ engine = create_async_engine(url=DATABASE_URL, **DATABASE_PARAMS)
 async_session = async_sessionmaker(engine, expire_on_commit=False)
 
 
-class Base(DeclarativeBase):
-    pass
+Base = declarative_base()
