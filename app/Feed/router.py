@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import HttpUrl
 
 from app.Feed.dao import FeedDAO
@@ -11,14 +11,14 @@ router = APIRouter(
     tags=["Лента новостей"]
 )
 
-@router.post("")
-async def add_rss(Feed:SFeed,current_user: User = Depends(get_current_user)) -> SFeedResponse:
-    new_feed = await FeedDAO.add_feed(current_user.id,Feed.url,Feed.title)
+@router.post("", response_model=SFeedResponse)
+async def add_rss(feed_data: SFeed, current_user: User = Depends(get_current_user)):
+    new_feed = await FeedDAO.add_feed(current_user.id, feed_data.url, feed_data.title)
     return SFeedResponse(
-    id = new_feed.id,
-    url= new_feed.url,
-    title= new_feed.title,
-    is_active= new_feed.is_active
+        id=new_feed.id,
+        url=new_feed.url,
+        title=new_feed.title,
+        is_active=new_feed.is_active
     )
 @router.get("/all")
 async def get_rss(current_user = Depends(get_current_user)):
