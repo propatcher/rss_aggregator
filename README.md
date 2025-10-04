@@ -26,7 +26,7 @@ A clean and functional RSS feed aggregator built with FastAPI. This pet project 
 - **Message Broker & Cache**: Redis  
 - **ORM**: SQLAlchemy 2.0 (modern declarative style)  
 - **Parsing**: `feedparser`  
-- **Auth**: JWT (OAuth2PasswordBearer)  
+- **Auth**: JWT (CustomAuth)  
 - **Architecture**: Feature-based (each entity in its own module)  
 - **Containerization**: Docker & Docker Compose 
 
