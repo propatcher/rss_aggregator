@@ -1,17 +1,19 @@
-from sqlalchemy.exc import SQLAlchemyError
-from app.logger import logger
 from sqlalchemy import delete, select
+from sqlalchemy.exc import SQLAlchemyError
+
 from app.Article.models import Article
 from app.DAO.base_dao import BaseDAO
+from app.database import async_session
 from app.Feed.models import Feed
+from app.logger import logger
 from app.User.dependencies import get_current_user
 from app.User.models import User
-from app.database import async_session
+
 
 class ArticleDAO(BaseDAO):
     model = Article
-    
-    async def get_your_article_by_user(user_id : int):
+
+    async def get_your_article_by_user(user_id: int):
         try:
             async with async_session() as session:
                 query = (
@@ -30,10 +32,9 @@ class ArticleDAO(BaseDAO):
             extra = {
                 "user_id": user_id,
             }
-            logger.error(
-                msg, extra=extra
-            )
-    async def delete_your_article_by_id(id:int,user_id:int):
+            logger.error(msg, extra=extra)
+
+    async def delete_your_article_by_id(id: int, user_id: int):
         try:
             async with async_session() as session:
                 query = (
@@ -50,9 +51,7 @@ class ArticleDAO(BaseDAO):
                 msg = "Database Exception"
             msg += ": Cannot delete articles"
             extra = {
-                "article_id":id,
+                "article_id": id,
                 "user_id": user_id,
             }
-            logger.error(
-                msg, extra=extra
-            )
+            logger.error(msg, extra=extra)

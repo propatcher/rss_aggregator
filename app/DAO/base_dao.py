@@ -1,7 +1,9 @@
-from sqlalchemy import delete,select
-from app.database import async_session
+from sqlalchemy import delete, select
 from sqlalchemy.exc import SQLAlchemyError
+
+from app.database import async_session
 from app.logger import logger
+
 
 class BaseDAO:
     model = None
@@ -17,13 +19,8 @@ class BaseDAO:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
             msg += ": Cannot find one or none"
-            extra = {
-                "model": cls,
-                "filters": filter_by
-            }
-            logger.error(
-                msg, extra=extra
-            )
+            extra = {"model": cls, "filters": filter_by}
+            logger.error(msg, extra=extra)
 
     @classmethod
     async def find_all(cls, **filter_by):
@@ -36,13 +33,8 @@ class BaseDAO:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
             msg += ": Cannot find all"
-            extra = {
-                "model": cls,
-                "filters": filter_by
-            }
-            logger.error(
-                msg, extra=extra
-            )
+            extra = {"model": cls, "filters": filter_by}
+            logger.error(msg, extra=extra)
 
     @classmethod
     async def find_by_id(cls, model_id: int):
@@ -52,13 +44,9 @@ class BaseDAO:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
             msg += ": Cannot find one or none"
-            extra = {
-                "model": cls,
-                "model_id": model_id
-            }
-            logger.error(
-                msg, extra=extra
-            )
+            extra = {"model": cls, "model_id": model_id}
+            logger.error(msg, extra=extra)
+
     @classmethod
     async def add(cls, **data):
         try:
@@ -72,14 +60,9 @@ class BaseDAO:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
             msg += ": Cannot find one or none"
-            extra = {
-                "model": cls,
-                "data": data
-            }
-            logger.error(
-                msg, extra=extra
-            )
-    
+            extra = {"model": cls, "data": data}
+            logger.error(msg, extra=extra)
+
     @classmethod
     async def delete(cls, **filter_by):
         try:
@@ -92,37 +75,28 @@ class BaseDAO:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
             msg += ": Cannot find one or none"
-            extra = {
-                "model": cls,
-                "filters": filter_by
-            }
-            logger.error(
-                msg, extra=extra
-            )
+            extra = {"model": cls, "filters": filter_by}
+            logger.error(msg, extra=extra)
+
     @classmethod
-    async def update_one(cls,new_data,**filter_by):
+    async def update_one(cls, new_data, **filter_by):
         try:
             async with async_session() as session:
                 query = select(cls.model).filter_by(**filter_by).limit(1)
                 result = await session.execute(query)
                 instance = result.scalar_one_or_none()
-                
+
                 if not instance:
                     return None
-                
+
                 for key, value in new_data.items():
                     setattr(instance, key, value)
-                
+
                 await session.commit()
                 return instance
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
             msg += ": Cannot find one or none"
-            extra = {
-                "model": cls,
-                "filters": filter_by
-            }
-            logger.error(
-                msg, extra=extra
-            )
+            extra = {"model": cls, "filters": filter_by}
+            logger.error(msg, extra=extra)

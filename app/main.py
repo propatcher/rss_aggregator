@@ -1,21 +1,24 @@
-from contextlib import asynccontextmanager
 import time
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
-from fastapi_cache import FastAPICache
-from prometheus_fastapi_instrumentator import Instrumentator
-from app.User.router import router as router_users
-from app.Article.router import router as router_articles
-from app.Feed.router import router as router_feeds
-from app.User.models import User
-from app.Article.models import Article
 from fastapi.middleware.cors import CORSMiddleware
-from app.Feed.models import Feed
+from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from app.admin.admin_setup import setup_admin
-from app.config import settings
+from prometheus_fastapi_instrumentator import Instrumentator
 from redis import asyncio as aioredis
-from app.logger import logger
+
+from app.admin.admin_setup import setup_admin
+from app.Article.models import Article
+from app.Article.router import router as router_articles
+from app.config import settings
 from app.database import engine
+from app.Feed.models import Feed
+from app.Feed.router import router as router_feeds
+from app.logger import logger
+from app.User.models import User
+from app.User.router import router as router_users
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -63,14 +66,15 @@ app.add_middleware(
 
 @app.get("/")
 async def init_fastapi():
-    return {"FastAPI" : "Success"}
+    return {"FastAPI": "Success"}
+
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.perf_counter()
     response = await call_next(request)
     process_time = time.perf_counter() - start_time
-    logger.info("Request exec time", extra={
-        "procces_time" : round(process_time,4)
-    })
+    logger.info(
+        "Request exec time", extra={"procces_time": round(process_time, 4)}
+    )
     return response

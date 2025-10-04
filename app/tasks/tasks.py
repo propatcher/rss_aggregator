@@ -1,11 +1,13 @@
 # app/tasks.py
 from celery import shared_task
 from sqlalchemy.orm import Session
-from app.database import sync_session
-from app.User.models import User
-from app.Feed.models import Feed
+
 from app.Article.models import Article
+from app.database import sync_session
+from app.Feed.models import Feed
 from app.Feed.parser import parse_rss_feed
+from app.User.models import User
+
 
 def get_db():
     db = sync_session()
@@ -13,6 +15,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 @shared_task
 def sync_all_feeds():
@@ -26,10 +29,14 @@ def sync_all_feeds():
             articles_data = parse_rss_feed(feed.url)
 
             for data in articles_data:
-                existing = db.query(Article).filter(
-                    Article.feed_id == feed.id,
-                    Article.link == data["link"]
-                ).first()
+                existing = (
+                    db.query(Article)
+                    .filter(
+                        Article.feed_id == feed.id,
+                        Article.link == data["link"],
+                    )
+                    .first()
+                )
 
                 if not existing:
                     new_article = Article(
@@ -39,7 +46,7 @@ def sync_all_feeds():
                         link=data["link"],
                         published_at=data["published_at"],
                         tags=data["tags"],
-                        is_read=False
+                        is_read=False,
                     )
                     db.add(new_article)
                     print(f"Добавлена новая статья: {data['title'][:50]}...")

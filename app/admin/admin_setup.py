@@ -31,7 +31,7 @@ class ArticleAdmin(ModelView, model=Article):
         Article.published_at,
         Article.is_read,
         Article.tags,
-        Article.created_at
+        Article.created_at,
     ]
 
 

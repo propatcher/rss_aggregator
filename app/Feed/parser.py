@@ -1,6 +1,8 @@
-import feedparser
 from datetime import datetime, timezone
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
+
+import feedparser
+
 
 def parse_rss_feed(url: str) -> List[Dict]:
     try:
@@ -9,22 +11,28 @@ def parse_rss_feed(url: str) -> List[Dict]:
 
         for entry in feed.entries:
             published_at = None
-            if hasattr(entry, 'published_parsed') and entry.published_parsed:
-                published_at = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
+            if hasattr(entry, "published_parsed") and entry.published_parsed:
+                published_at = datetime(
+                    *entry.published_parsed[:6], tzinfo=timezone.utc
+                )
             else:
                 published_at = datetime.now(timezone.utc)
 
             tags = []
-            if hasattr(entry, 'tags'):
-                tags = [tag.term.lower().strip() for tag in entry.tags if tag.term]
+            if hasattr(entry, "tags"):
+                tags = [
+                    tag.term.lower().strip() for tag in entry.tags if tag.term
+                ]
 
-            articles.append({
-                "title": entry.get("title", "Без заголовка")[:255],
-                "summary": entry.get("summary", "")[:2000],
-                "link": entry.get("link", ""),
-                "published_at": published_at,
-                "tags": tags or None,
-            })
+            articles.append(
+                {
+                    "title": entry.get("title", "Без заголовка")[:255],
+                    "summary": entry.get("summary", "")[:2000],
+                    "link": entry.get("link", ""),
+                    "published_at": published_at,
+                    "tags": tags or None,
+                }
+            )
 
         return articles
 

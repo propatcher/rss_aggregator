@@ -4,7 +4,7 @@ celery = Celery(
     "rss_aggregator",
     broker="redis://localhost:6379",
     backend="redis://localhost:6379",
-    include=["app.tasks.tasks"]
+    include=["app.tasks.tasks"],
 )
 
 celery.conf.beat_schedule = {

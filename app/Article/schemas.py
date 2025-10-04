@@ -1,17 +1,20 @@
 from datetime import datetime
-from typing import Optional,Any
-from pydantic import BaseModel, ConfigDict,HttpUrl
+from typing import Any, Optional
+
+from pydantic import BaseModel, ConfigDict, HttpUrl
+
 
 class SArticle(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    
-    title:str
+
+    title: str
     summary: Optional[str] = None
-    link:HttpUrl
-    published_at:datetime
-    is_read:bool
+    link: HttpUrl
+    published_at: datetime
+    is_read: bool
     tags: Optional[Any] = None
-    created_at:datetime
-    
+    created_at: datetime
+
+
 class SArticleResponse(SArticle):
-    id:int
+    id: int
