@@ -21,7 +21,7 @@ A clean and functional RSS feed aggregator built with FastAPI. This pet project 
 ## 🛠️ Tech Stack
 
 - **Backend Framework**: FastAPI  
-- **Database**: SQLite (ready for PostgreSQL)  
+- **Database**: PostgreSQL
 - **Task Queue**: Celery  
 - **Message Broker & Cache**: Redis  
 - **ORM**: SQLAlchemy 2.0 (modern declarative style)  
