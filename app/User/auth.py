@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
-from fastapi import Cookie, Depends, HTTPException
+from fastapi import Cookie, Depends
 from jose import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
