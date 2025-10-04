@@ -9,6 +9,7 @@ class Feed(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     url: Mapped[str] = mapped_column(String(255), nullable=False)
+    normalized_url = mapped_column(String, nullable=False)
     title: Mapped[str] = mapped_column(String(100), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     
