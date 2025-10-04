@@ -104,19 +104,47 @@ class FeedDAO(BaseDAO):
             await session.execute(delete_stmt)
             await session.commit()
             return True
-    async def update_feed(user_id: int, url: HttpUrl, new_title: str, new_url):
-        normalized = normalize_url(url)
+        
+    async def update_feed(user_id: int, old_url: HttpUrl, new_title: str, new_url: HttpUrl):
+        new_normalized = normalize_url(new_url)
+
+        if not await is_valid_rss(str(new_url)):
+            raise HTTPException(
+                status_code=400,
+                detail="Новый URL не является валидным RSS-фидом"
+            )
+
         async with async_session() as session:
+            old_normalized = normalize_url(old_url)
             result = await session.execute(
                 select(Feed).where(
-                    Feed.normalized_url == normalized,
+                    Feed.normalized_url == old_normalized,
                     Feed.user_id == user_id,
                 )
             )
             feed = result.scalar_one_or_none()
             if not feed:
-                return False
+                raise HTTPException(
+                    status_code=404,
+                    detail="Лента не найдена"
+                )
+
+            existing_feed = await session.execute(
+                select(Feed).where(
+                    Feed.normalized_url == new_normalized,
+                    Feed.user_id == user_id,
+                )
+            )
+            if existing_feed.scalar_one_or_none() and str(new_url) != feed.url:
+                raise HTTPException(
+                    status_code=409,
+                    detail="Вы уже отслеживаете эту RSS-ленту"
+                )
+
             feed.url = str(new_url)
+            feed.normalized_url = new_normalized
             feed.title = new_title
+
             await session.commit()
+            await session.refresh(feed)
             return feed
