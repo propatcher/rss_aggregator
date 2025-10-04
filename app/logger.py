@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timezone
 
-from pythonjsonlogger import jsonlogger
+from pythonjsonlogger import json
 
 from app.config import settings
 
@@ -10,7 +10,7 @@ logger = logging.getLogger()
 logHandler = logging.StreamHandler()
 
 
-class CustomJsonFormatter(jsonlogger.JsonFormatter):
+class CustomJsonFormatter(json.JsonFormatter):
     def add_fields(self, log_record, record, message_dict):
         super(CustomJsonFormatter, self).add_fields(
             log_record, record, message_dict

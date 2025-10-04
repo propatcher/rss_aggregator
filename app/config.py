@@ -38,6 +38,9 @@ class Settings(BaseSettings):
     @property
     def TEST_DATABASE_URL(self):
         return f"postgresql+asyncpg://{self.TEST_DB_USER}:{self.TEST_DB_PASS}@{self.TEST_DB_HOST}:{self.TEST_DB_PORT}/{self.TEST_DB_NAME}"
+    @property
+    def TEST_SYNC_DATABASE_URL(self):
+        return f"postgresql+psycopg2://{self.TEST_DB_USER}:{self.TEST_DB_PASS}@{self.TEST_DB_HOST}:{self.TEST_DB_PORT}/{self.TEST_DB_NAME}"
 
 
 settings = Settings()
