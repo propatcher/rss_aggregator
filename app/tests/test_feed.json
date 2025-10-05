@@ -2,7 +2,7 @@
   {
     "user_id": 1,
     "url": "https://techblog.example.com/feed.xml",
-    "normalized_url": "https://techblog.example.com/feed.xml",
+    "normalized_url": "techblog.example.com/feed.xml",
     "title": "Tech Blog",
     "is_active": true
   },
@@ -16,7 +16,7 @@
   {
     "user_id": 2,
     "url": "https://rss.cnn.com/rss/edition.rss",
-    "normalized_url": "https://rss.cnn.com/rss/edition.rss",
+    "normalized_url": "rss.cnn.com/rss/edition.rss",
     "title": "CNN Top Stories",
     "is_active": true
   },

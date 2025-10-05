@@ -18,9 +18,12 @@ class BaseDAO:
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot find one or none"
+                msg += ": Cannot find one or none"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {"model": cls, "filters": filter_by}
             logger.error(msg, extra=extra)
+            raise
 
     @classmethod
     async def find_all(cls, **filter_by):
@@ -32,9 +35,12 @@ class BaseDAO:
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot find all"
+                msg += ": Cannot find all"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {"model": cls, "filters": filter_by}
             logger.error(msg, extra=extra)
+            raise
 
     @classmethod
     async def find_by_id(cls, model_id: int):
@@ -43,9 +49,12 @@ class BaseDAO:
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot find one or none"
+                msg += ": Cannot find one or none"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {"model": cls, "model_id": model_id}
             logger.error(msg, extra=extra)
+            raise
 
     @classmethod
     async def add(cls, **data):
@@ -59,9 +68,12 @@ class BaseDAO:
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot find one or none"
+                msg += ": Cannot find one or none"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {"model": cls, "data": data}
             logger.error(msg, extra=extra)
+            raise
 
     @classmethod
     async def delete(cls, **filter_by):
@@ -74,9 +86,12 @@ class BaseDAO:
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot find one or none"
+                msg += ": Cannot find one or none"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {"model": cls, "filters": filter_by}
             logger.error(msg, extra=extra)
+            raise
 
     @classmethod
     async def update_one(cls, new_data, **filter_by):
@@ -97,6 +112,9 @@ class BaseDAO:
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot find one or none"
+                msg += ": Cannot find one or none"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {"model": cls, "filters": filter_by}
             logger.error(msg, extra=extra)
+            raise

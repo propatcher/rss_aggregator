@@ -28,11 +28,14 @@ class ArticleDAO(BaseDAO):
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot get articles"
+                msg += ": Cannot get articles"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {
                 "user_id": user_id,
             }
             logger.error(msg, extra=extra)
+            raise
 
     async def delete_your_article_by_id(id: int, user_id: int):
         try:
@@ -49,9 +52,12 @@ class ArticleDAO(BaseDAO):
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot delete articles"
+                msg += ": Cannot delete articles"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
             extra = {
                 "article_id": id,
                 "user_id": user_id,
             }
             logger.error(msg, extra=extra)
+            raise

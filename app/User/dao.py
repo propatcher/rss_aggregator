@@ -21,8 +21,11 @@ class UserDAO(BaseDAO):
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg = "Database Exception"
-            msg += ": Cannot add feed"
+                msg += ": Cannot add feed"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"
             extra = {
                 "identifier": identifier,
             }
             logger.error(msg, extra=extra)
+            raise
