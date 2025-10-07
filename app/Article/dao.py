@@ -1,3 +1,4 @@
+from typing import Optional
 from sqlalchemy import delete, func, select, text
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -89,6 +90,42 @@ class ArticleDAO(BaseDAO):  #TODO Больше обработок exception
             extra = {
                 "user_id": user_id,
                 "tag": tag
+            }
+            logger.error(msg, extra=extra)
+            raise
+    async def search_find(search_params: Optional[str], user_id: int):
+        try:
+            async with async_session() as session:
+                query = (
+                    select(Article)
+                    .options(joinedload(Article.feed))
+                    .join(Feed, Feed.id == Article.feed_id)
+                    .where(Feed.user_id == user_id)
+                )
+                if search_params:
+                    search_pattern = f"%{search_params}%"
+                    query = query.where(Article.title.ilike(search_pattern))
+                
+                result = await session.execute(query)
+                articles = result.unique().scalars().all()
+                
+                if not articles:
+                    raise NoArticle
+                    
+                return articles
+                
+        except NoArticle:
+            raise
+        
+        except (SQLAlchemyError, Exception) as e:
+            if isinstance(e, SQLAlchemyError):
+                msg = "Database Exception"
+                msg += ": Cannot get articles"
+            else:
+                msg = f"Unexpected Exception ({type(e).__name__})"                
+            extra = {
+                "user_id": user_id,
+                "search_params": search_params
             }
             logger.error(msg, extra=extra)
             raise

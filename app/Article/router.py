@@ -21,6 +21,10 @@ async def get_articles_by_tag(
 ) -> List[SArticle]:
     return await ArticleDAO.get_articles_by_tag(user_id=user_data.id, tag=tag)
 
+@router.get("/search")
+async def search_your_articles(q = Query(None, description="Поиск..."),user_data: User = Depends(get_current_user)):
+    return await ArticleDAO.search_find(q,user_data.id)
+
 @router.post("/refresh")
 async def refresh_your_articles(user_data: User = Depends(get_current_user)):
     sync_all_feeds()
