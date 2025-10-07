@@ -67,4 +67,3 @@ app.add_middleware(
 @app.get("/")
 async def init_fastapi():
     return {"FastAPI": "Success"}
-
