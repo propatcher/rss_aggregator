@@ -17,7 +17,7 @@ else:
 engine = create_async_engine(url=DATABASE_URL, **DATABASE_PARAMS)
 
 async_session = async_sessionmaker(engine, expire_on_commit=False)
-
+    
 sync_engine = create_engine(url=SYNC_DATABASE_URL, echo=False)
 
 sync_session = sessionmaker(

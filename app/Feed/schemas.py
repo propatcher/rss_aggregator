@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict, HttpUrl
 
 
 class SFeed(BaseModel):
-    url: HttpUrl
+    url: str
     title: str
 
 

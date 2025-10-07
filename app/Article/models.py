@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
 from pydantic import AnyUrl
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy import (
     JSON,
     Boolean,
@@ -30,7 +31,7 @@ class Article(Base):
         DateTime(timezone=True), nullable=False
     )
     is_read: Mapped[bool] = mapped_column(Boolean, default=False)
-    tags: Mapped[JSON] = mapped_column(JSON, nullable=True)
+    tags: Mapped[list[str] | None] = mapped_column(JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now
     )

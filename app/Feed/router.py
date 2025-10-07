@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from pydantic import HttpUrl
 
 from app.Feed.dao import FeedDAO
@@ -29,9 +29,15 @@ async def get_rss(current_user=Depends(get_current_user)):
     return await FeedDAO.find_all(user_id=current_user.id)
 
 
-@router.delete("/delete")
+@router.delete("/delete/{feed_id}")
 async def delete_rss(
-    feed_id: int, current_user: User = Depends(get_current_user)
+    feed_id: int = Path(
+        ...,
+        ge=1,
+        le=1_000_000,
+        description="ID rss ленты (от 1 до 1 млн)",
+        examples=1
+    ), current_user: User = Depends(get_current_user)
 ):
     delete_feed = await FeedDAO.delete_feed(feed_id, current_user.id)
     if delete_feed == True:
@@ -40,12 +46,20 @@ async def delete_rss(
         return {"Ссылки не существует"}
 
 
-@router.put("/edit")
+@router.put("/edit/{feed_id}")
 async def update_rss(
-    Feed: SFeed, url: HttpUrl, current_user: User = Depends(get_current_user)
+    *,
+    feed_id: int = Path(
+        ...,
+        ge=1,
+        le=1_000_000,
+        description="ID rss ленты (от 1 до 1 млн)",
+        examples=1
+    ),
+    feed: SFeed, url: HttpUrl, current_user: User = Depends(get_current_user)
 ):
     new_feed = await FeedDAO.update_feed(
-        current_user.id, url, Feed.title, Feed.url
+        current_user.id,feed_id,url, feed.title, feed.url
     )
     return SFeedResponse(
         id=new_feed.id,

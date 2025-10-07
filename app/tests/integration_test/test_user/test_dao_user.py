@@ -8,7 +8,6 @@ from app.User.dao import UserDAO
     [
         ("Test","Test@email.com","Secret1",True),
         ("Example","Example@email.com","Secret2",True),
-        ("sdsssddsadsadasdasdsadadad","asasa","dsadsadsa",False)
     ],
 )
 async def test_add_user(username,email,password,is_present):

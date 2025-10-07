@@ -73,7 +73,7 @@ async def auth_ac():
         login_response = await ac.post(
             "/auth/login",
             json={
-                "identifier": "SDakdjdij324",
+                "identifier": "SDakdjdij324ss",
                 "password": "fjkdsfiosdfji3312",
             },
         )

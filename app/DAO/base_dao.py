@@ -9,7 +9,7 @@ class BaseDAO:
     model = None
 
     @classmethod
-    async def find_one_or_none(cls, **filter_by):
+    async def find_one_or_none(cls, **filter_by):   #TODO Больше обработок exception
         try:
             async with async_session() as session:
                 query = select(cls.model).filter_by(**filter_by)

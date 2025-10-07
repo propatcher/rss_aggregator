@@ -7,7 +7,7 @@ from app.logger import logger
 from app.User.models import User
 
 
-class UserDAO(BaseDAO):
+class UserDAO(BaseDAO):   #TODO Больше обработок exception
     model = User
 
     async def find_by_email_or_username(identifier: str):

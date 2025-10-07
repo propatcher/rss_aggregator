@@ -20,7 +20,7 @@ class RssLinkAlreadyExist(DefaultException):
 
 
 class FeedNotFound(DefaultException):
-    status_code = status.HTTP_204_NO_CONTENT
+    status_code = status.HTTP_404_NOT_FOUND
     detail = "Новостная лента не существует"
 
 
@@ -67,3 +67,7 @@ class IncorrectRole(DefaultException):
 class UserAlreadyLogin(DefaultException):
     status_code = status.HTTP_403_FORBIDDEN
     detail = "Вы уже вошли"
+
+class NoArticle(DefaultException):
+    status_code = status_code = status.HTTP_404_NOT_FOUND
+    detail = "У вас нету новых новостей"
