@@ -24,7 +24,7 @@ async def add_rss(
     )
 
 
-@router.get("/all")
+@router.post("/all")
 async def get_rss(current_user=Depends(get_current_user)):
     return await FeedDAO.find_all(user_id=current_user.id)
 
