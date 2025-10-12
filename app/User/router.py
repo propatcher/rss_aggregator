@@ -60,6 +60,6 @@ async def logout_user(response: Response):
     response.delete_cookie("rss_access_token")
 
 
-@router.post("/me")
+@router.get("/me")
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
