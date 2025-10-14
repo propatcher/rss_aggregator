@@ -26,7 +26,7 @@ class Article(Base):
     feed_id: Mapped[int] = mapped_column(ForeignKey("feeds.id"))
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     summary: Mapped[str] = mapped_column(String(2000), nullable=True)
-    link: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
+    link: Mapped[str] = mapped_column(String(255), nullable=False, unique=False)
     published_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )
