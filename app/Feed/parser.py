@@ -1,10 +1,10 @@
 from datetime import datetime, timezone
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import feedparser
 
 
-def parse_rss_feed(url: str) -> List[Dict]:
+def parse_rss_feed(url: str):
     try:
         feed = feedparser.parse(url)
         articles = []
@@ -26,8 +26,8 @@ def parse_rss_feed(url: str) -> List[Dict]:
 
             articles.append(
                 {
-                    "title": entry.get("title", "Без заголовка")[:255],
-                    "summary": entry.get("summary", "")[:2000],
+                    "title": entry.get("title", "Без заголовка")[:200],
+                    "summary": entry.get("summary", "")[:1000],
                     "link": entry.get("link", ""),
                     "published_at": published_at,
                     "tags": tags or None,

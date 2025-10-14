@@ -1,4 +1,3 @@
-# app/tasks.py
 from celery import shared_task
 from sqlalchemy.orm import Session
 
@@ -33,7 +32,7 @@ def sync_all_feeds():
                     db.query(Article)
                     .filter(
                         Article.feed_id == feed.id,
-                        Article.link == data["link"],
+                    Article.link == data["link"],
                     )
                     .first()
                 )

@@ -9,7 +9,7 @@ from app.User.models import User
 router = APIRouter(prefix="/feed", tags=["Лента новостей"])
 
 
-@router.post("", response_model=SFeedResponse)
+@router.post("/", response_model=SFeedResponse)
 async def add_rss(
     feed_data: SFeed, current_user: User = Depends(get_current_user)
 ):
